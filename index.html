@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Trajectory editor</title>
+    <script src="js/bezier.js"></script>
+    <script src="js/draw.js"></script>
+    <script src="js/interaction.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>Trajectory editor</h1>
+    </header>
+
+    <main>
+      <section>
+        <canvas width="1000" height="800" style="cursor: default; background: url('./images/frc_field_small.png');background-repeat:no-repeat"></canvas>
+      </section>
+      <p id="points"></p>
+    </main>
+
+    <footer>
+      <p>Made by <a href="https://twitter.com/TheRealPomax">Pomax</a>. Based on the work done for <a href="http://pomax.github.io/bezierinfo">A Primer on Bézier Curves</a>. Naturally, the code's open source over on <a href="http://github.com/Pomax/bezierjs">github</a>.<br>
+      Still to do: intersection resolution for outlines with overlapping extrusions.</p>
+    </footer>
+
+    <script>(function(drawfunctions) {
+        with(drawfunctions) {
+          with(Math) {
+            var curve = new Bezier(74,152,183,153,58,686,583,491);
+            var draw = function() {
+                drawSkeleton(curve);
+                drawCurve(curve);
+                setColor("red");
+                curve.offset(25).forEach(function(c) {
+                  drawCurve(c);
+                });
+                curve.offset(-25).forEach(function(c) {
+                  drawCurve(c);
+                });
+              }
+              draw();
+              handleInteraction(getCanvas(), curve).onupdate = function(evt) { reset(); draw(evt); }
+            }
+          }
+        } (bindDrawFunctions( 0 )) );
+    </script>
+
+  </body>
+</html>
